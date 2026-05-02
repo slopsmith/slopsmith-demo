@@ -11,13 +11,13 @@
   document.addEventListener('DOMContentLoaded', function () {
     var nav = document.getElementById('nav-plugins');
     if (!nav) return;
-    var obs = new MutationObserver(function (mutations) {
-      mutations.forEach(function (m) {
-        if (m.type === 'childList') {
-          console.log('[demo] nav-plugins mutation — added:', m.addedNodes.length, 'removed:', m.removedNodes.length, '\nStack:', new Error().stack);
-        }
-      });
+    var desc = Object.getOwnPropertyDescriptor(Element.prototype, 'innerHTML');
+    Object.defineProperty(nav, 'innerHTML', {
+      get: function () { return desc.get.call(this); },
+      set: function (v) {
+        console.log('[demo] nav-plugins innerHTML set — new length:', v.length, '\n' + new Error().stack);
+        desc.set.call(this, v);
+      }
     });
-    obs.observe(nav, { childList: true });
   });
 })();
