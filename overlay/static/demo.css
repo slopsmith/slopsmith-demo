@@ -26,6 +26,7 @@
 /* Push fullscreen player below the banner */
 #player.active {
   top: var(--banner-h) !important;
+  height: calc(100dvh - var(--banner-h)) !important;
 }
 
 /* Push normal-flow content (library, settings, plugin screens) below the banner */
