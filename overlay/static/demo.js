@@ -14,8 +14,7 @@
     var obs = new MutationObserver(function (mutations) {
       mutations.forEach(function (m) {
         if (m.type === 'childList') {
-          console.log('[demo] nav-plugins childList mutation — added:', m.addedNodes.length, 'removed:', m.removedNodes.length);
-          console.trace('[demo] nav-plugins changed');
+          console.log('[demo] nav-plugins mutation — added:', m.addedNodes.length, 'removed:', m.removedNodes.length, '\nStack:', new Error().stack);
         }
       });
     });
