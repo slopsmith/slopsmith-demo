@@ -19,15 +19,14 @@ WORKDIR /app
 # Clone slopsmith core (feat/demo-mode until #148 merges)
 RUN git clone --depth 1 --branch feat/demo-mode https://github.com/byrongamatos/slopsmith.git /app
 
-# byrongamatos plugins
-# (built-ins drums/editor/lyrics_karaoke/lyrics_sync/notedetect/piano/studio already in /app/plugins/)
+# byrongamatos plugins (all — none are committed to the slopsmith core repo)
 # Excluded: cf (ToS), ug (ToS), rs-2d-highway, find-more, rooms, slopsmith-update-manager
 RUN for plugin in \
-      3dhighway discextract fretboard metronome midi multiplayer \
-      nam-tone practice profileimport rs1extract sectionmap setlist \
-      stepmode tabimport tabview tones; do \
+      3dhighway discextract drums editor fretboard lyrics-karaoke lyrics-sync \
+      metronome midi multiplayer nam-tone notedetect piano practice profileimport \
+      rs1extract sectionmap setlist stepmode studio tabimport tabview tones; do \
     git clone --depth 1 https://github.com/byrongamatos/slopsmith-plugin-${plugin}.git \
-      /app/plugins/${plugin} 2>/dev/null || echo "skip $plugin"; \
+      /app/plugins/${plugin//-/_} 2>/dev/null || echo "skip $plugin"; \
   done
 
 # Community plugins
