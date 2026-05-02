@@ -24,9 +24,9 @@ RUN git clone --depth 1 https://github.com/byrongamatos/slopsmith.git /app
 # byrongamatos plugins (all — none are committed to the slopsmith core repo)
 # Excluded: cf (ToS), ug (ToS), rs-2d-highway, find-more, rooms, slopsmith-update-manager
 RUN for plugin in \
-      3dhighway discextract drums editor fretboard lyrics-karaoke lyrics-sync \
-      metronome midi multiplayer nam-tone notedetect piano practice profileimport \
-      rs1extract sectionmap setlist stepmode studio tabimport tabview tones; do \
+      3dhighway drums editor fretboard lyrics-karaoke lyrics-sync \
+      metronome midi multiplayer nam-tone notedetect piano practice \
+      sectionmap setlist stepmode studio tabimport tabview tones; do \
     git clone --depth 1 https://github.com/byrongamatos/slopsmith-plugin-${plugin}.git \
       /app/plugins/${plugin//-/_} 2>/dev/null || echo "skip $plugin"; \
   done
@@ -34,7 +34,6 @@ RUN for plugin in \
 # Community plugins
 RUN git clone --depth 1 https://github.com/alleexx/slopsmith-plugin-transpose-chords.git /app/plugins/transpose_chords \
  && git clone --depth 1 https://github.com/masc0t/slopsmith-plugin-invert-highway.git /app/plugins/invert_highway \
- && git clone --depth 1 https://github.com/masc0t/slopsmith-plugin-midi-capo.git /app/plugins/midi_capo \
  && git clone --depth 1 https://github.com/masc0t/slopsmith-plugin-the-daily.git /app/plugins/the_daily \
  && git clone --depth 1 https://github.com/masc0t/slopsmith-plugin-themes.git /app/plugins/themes \
  && git clone --depth 1 https://github.com/narvasus/slopsmith-plugin-stem-mixer.git /app/plugins/stem_mixer \
