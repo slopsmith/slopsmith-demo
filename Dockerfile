@@ -52,8 +52,34 @@ RUN pip install --no-cache-dir -r /app/requirements.txt
 RUN find /app/plugins -maxdepth 2 -name requirements.txt \
     -exec pip install --no-cache-dir -r {} \;
 
-# Overlay: replace index.html, add demo.js + demo.css
+# Overlay: add demo.js + demo.css, then patch slopsmith's index.html in-place
+# (no overlay index.html — we patch the live one so it always tracks slopsmith updates)
 COPY overlay/static/ /app/static/
+RUN python3 - << 'PYEOF'
+import re
+path = '/app/static/index.html'
+html = open(path).read()
+
+# 1. Demo CSS in <head>
+html = html.replace('</head>', '    <link rel="stylesheet" href="/static/demo.css">\n</head>', 1)
+
+# 2. Demo banner at top of <body>
+html = re.sub(
+    r'(<body\b[^>]*>)',
+    r'\1\n    <div id="demo-banner">DEMO MODE — your edits are temporary and not saved</div>',
+    html, count=1
+)
+
+# 3. demo.js + SLOPSMITH_DEMO flag injected before highway.js
+html = html.replace(
+    '<script src="/static/highway.js">',
+    '<script>window.SLOPSMITH_DEMO = true;</script>\n    <script src="/static/demo.js"></script>\n    <script src="/static/highway.js">',
+    1
+)
+
+open(path, 'w').write(html)
+print('index.html patched OK')
+PYEOF
 
 # Demo content
 COPY dlc/ /app/dlc/
