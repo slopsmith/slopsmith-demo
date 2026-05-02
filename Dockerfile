@@ -18,6 +18,9 @@ RUN curl -sL https://github.com/vgmstream/vgmstream/releases/download/r2083/vgms
 
 WORKDIR /app
 
+# Bust layer cache when slopsmith main branch changes
+ADD https://api.github.com/repos/byrongamatos/slopsmith/git/refs/heads/main /tmp/slopsmith_ref
+
 # Clone slopsmith core
 RUN git clone --depth 1 https://github.com/byrongamatos/slopsmith.git /app
 
