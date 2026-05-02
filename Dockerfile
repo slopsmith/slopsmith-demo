@@ -28,7 +28,7 @@ RUN git clone --depth 1 https://github.com/byrongamatos/slopsmith.git /app
 # Excluded: cf (ToS), ug (ToS), rs-2d-highway, find-more, rooms, slopsmith-update-manager
 RUN for plugin in \
       3dhighway drums editor fretboard lyrics-karaoke lyrics-sync \
-      metronome midi multiplayer nam-tone notedetect piano practice \
+      metronome midi multiplayer nam-tone notedetect piano player-guide practice \
       sectionmap setlist stepmode studio tabimport tabview tones; do \
     git clone --depth 1 https://github.com/byrongamatos/slopsmith-plugin-${plugin}.git \
       /app/plugins/${plugin//-/_} 2>/dev/null || echo "skip $plugin"; \
