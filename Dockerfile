@@ -16,8 +16,8 @@ RUN curl -sL https://github.com/vgmstream/vgmstream/releases/download/r2083/vgms
 
 WORKDIR /app
 
-# Clone slopsmith core
-RUN git clone --depth 1 https://github.com/byrongamatos/slopsmith.git /app
+# Clone slopsmith core (feat/demo-mode until #148 merges)
+RUN git clone --depth 1 --branch feat/demo-mode https://github.com/byrongamatos/slopsmith.git /app
 
 # byrongamatos plugins
 # (built-ins drums/editor/lyrics_karaoke/lyrics_sync/notedetect/piano/studio already in /app/plugins/)
