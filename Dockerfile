@@ -86,6 +86,13 @@ PYEOF
 COPY dlc/ /app/dlc/
 COPY nam-profiles/ /app/nam-profiles/
 
+# Demo binary assets (kept out of git — fetched from a GitHub release at
+# build time so HF Spaces' git remote doesn't reject binaries).
+RUN mkdir -p /app/demo-assets \
+ && curl -sLf \
+      https://github.com/byrongamatos/slopsmith-demo/releases/download/demo-assets-v1/highway-bg.mp4 \
+      -o /app/demo-assets/highway-bg.mp4
+
 # Nginx + supervisord config
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY supervisord.conf /etc/supervisor/conf.d/slopsmith-demo.conf
