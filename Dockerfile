@@ -85,6 +85,7 @@ PYEOF
 # Demo content
 COPY dlc/ /app/dlc/
 COPY nam-profiles/ /app/nam-profiles/
+COPY assets/ /app/demo-assets/
 
 # Nginx + supervisord config
 COPY nginx.conf /etc/nginx/nginx.conf

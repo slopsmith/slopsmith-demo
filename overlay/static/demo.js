@@ -1,6 +1,19 @@
 (function () {
   if (!window.SLOPSMITH_DEMO) return;
 
+  // Seed the 3D highway plugin to default to the bundled demo video
+  // backdrop on first visit. Only writes when h3d_bg_style is unset, so
+  // returning visitors who picked a different style keep their pick.
+  // Runs synchronously at script-load time (before highway.js) so the
+  // renderer's first read sees the seeded values instead of falling
+  // back to BG_DEFAULTS.style ('particles').
+  try {
+    if (localStorage.getItem('h3d_bg_style') === null) {
+      localStorage.setItem('h3d_bg_style', 'video');
+      localStorage.setItem('h3d_bg_customVideoName', 'current.mp4');
+    }
+  } catch (_) { /* private mode — renderer falls through to BG_DEFAULTS */ }
+
   window.slopsmithDemoTrack = function (event) {
     if (typeof window.goatcounter === 'undefined') return;
     window.goatcounter.count({ path: event, title: event, event: true });
