@@ -18,6 +18,13 @@ RUN curl -sL https://github.com/vgmstream/vgmstream/releases/download/r2083/vgms
 
 WORKDIR /app
 
+# Never let a clone fall into an interactive credential prompt. A deleted or
+# made-private plugin repo returns an HTTP auth challenge, and without this
+# git tries to read a username from a non-existent TTY and aborts the whole
+# build (exit 128). With prompts disabled the clone fails fast and the
+# per-plugin `|| echo skip` below turns it into a skip instead of a hard stop.
+ENV GIT_TERMINAL_PROMPT=0
+
 # This ref changes on every push to slopsmith-demo, busting the cache for all
 # subsequent git clone layers — so every build pulls fresh from GitHub.
 ADD https://api.github.com/repos/byrongamatos/slopsmith-demo/git/refs/heads/main /tmp/build_ref
@@ -25,26 +32,34 @@ ADD https://api.github.com/repos/byrongamatos/slopsmith-demo/git/refs/heads/main
 # Clone slopsmith core
 RUN git clone --depth 1 https://github.com/byrongamatos/slopsmith.git /app
 
-# byrongamatos plugins (all — none are committed to the slopsmith core repo)
-# Excluded: cf (ToS), ug (ToS), rs-2d-highway, find-more, rooms, slopsmith-update-manager
+# byrongamatos plugins (all — none are committed to the slopsmith core repo).
+# Kept in sync with the desktop bundle list in
+# slopsmith-desktop/scripts/build-common.sh::clone_slopsmith.
+# Excluded: cf (ToS), ug (ToS), rs-2d-highway, rooms.
 RUN for plugin in \
-      drums editor fretboard lyrics-karaoke lyrics-sync \
-      metronome midi multiplayer nam-tone notedetect piano player-guide practice \
-      sectionmap setlist stepmode studio tabimport tabview tones; do \
+      drum-highway-3d drums editor flappy-bend fretboard jumpingtab \
+      lyrics-karaoke metronome midi multiplayer nam-tone notedetect \
+      piano practice profileimport sectionmap setlist song-preview \
+      stepmode studio tabimport tabview tones; do \
     git clone --depth 1 https://github.com/byrongamatos/slopsmith-plugin-${plugin}.git \
       /app/plugins/${plugin//-/_} 2>/dev/null || echo "skip $plugin"; \
   done
 
-# Community plugins
-RUN git clone --depth 1 https://github.com/alleexx/slopsmith-plugin-transpose-chords.git /app/plugins/transpose_chords \
- && git clone --depth 1 https://github.com/masc0t/slopsmith-plugin-invert-highway.git /app/plugins/invert_highway \
- && git clone --depth 1 https://github.com/masc0t/slopsmith-plugin-the-daily.git /app/plugins/the_daily \
- && git clone --depth 1 https://github.com/masc0t/slopsmith-plugin-themes.git /app/plugins/themes \
- && git clone --depth 1 https://github.com/narvasus/slopsmith-plugin-stem-mixer.git /app/plugins/stem_mixer \
- && git clone --depth 1 https://github.com/renanboni/slopsmith-plugin-jumpingtab.git /app/plugins/jumpingtab \
- && git clone --depth 1 https://github.com/topkoa/slopsmith-plugin-guitar-theory.git /app/plugins/guitar_theory \
- && git clone --depth 1 https://github.com/topkoa/slopsmith-plugin-splitscreen.git /app/plugins/splitscreen \
- && git clone --depth 1 https://github.com/topkoa/slopsmith-plugin-stems.git /app/plugins/stems
+# Community plugins. Each clone tolerates failure (|| echo skip) so a deleted
+# or made-private community repo degrades to a missing plugin instead of
+# aborting the whole image build. Kept in sync with the desktop bundle list.
+RUN git clone --depth 1 https://github.com/alleexx/slopsmith-plugin-transpose-chords.git /app/plugins/transpose_chords 2>/dev/null || echo "skip transpose_chords"; \
+    git clone --depth 1 https://github.com/ChrisBeWithYou/slopsmith-plugin-slopscale.git /app/plugins/slopscale 2>/dev/null || echo "skip slopscale"; \
+    git clone --depth 1 https://github.com/Jafz2001/slopsmith-plugin-nam-rig-builder.git /app/plugins/nam_rig_builder 2>/dev/null || echo "skip nam_rig_builder"; \
+    git clone --depth 1 https://github.com/masc0t/slopsmith-plugin-find-more.git /app/plugins/find_more 2>/dev/null || echo "skip find_more"; \
+    git clone --depth 1 https://github.com/masc0t/slopsmith-plugin-invert-highway.git /app/plugins/invert_highway 2>/dev/null || echo "skip invert_highway"; \
+    git clone --depth 1 https://github.com/masc0t/slopsmith-plugin-themes.git /app/plugins/themes 2>/dev/null || echo "skip themes"; \
+    git clone --depth 1 https://github.com/masc0t/slopsmith-update-manager.git /app/plugins/update_manager 2>/dev/null || echo "skip update_manager"; \
+    git clone --depth 1 https://github.com/narvasus/slopsmith-plugin-stem-mixer.git /app/plugins/stem_mixer 2>/dev/null || echo "skip stem_mixer"; \
+    git clone --depth 1 https://github.com/topkoa/slopsmith-plugin-guitar-theory.git /app/plugins/guitar_theory 2>/dev/null || echo "skip guitar_theory"; \
+    git clone --depth 1 https://github.com/topkoa/slopsmith-plugin-sloppak-converter.git /app/plugins/sloppak_converter 2>/dev/null || echo "skip sloppak_converter"; \
+    git clone --depth 1 https://github.com/topkoa/slopsmith-plugin-splitscreen.git /app/plugins/splitscreen 2>/dev/null || echo "skip splitscreen"; \
+    git clone --depth 1 https://github.com/topkoa/slopsmith-plugin-stems.git /app/plugins/stems 2>/dev/null || echo "skip stems"
 
 # Install Python deps
 RUN pip install --no-cache-dir -r /app/requirements.txt
