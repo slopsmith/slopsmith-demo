@@ -40,7 +40,7 @@ RUN for plugin in \
       drum-highway-3d drums editor flappy-bend fretboard jumpingtab \
       lyrics-karaoke metronome midi multiplayer nam-tone notedetect \
       piano practice profileimport sectionmap setlist song-preview \
-      stepmode studio tabimport tabview tones; do \
+      stepmode studio tabimport tabview tones tutorials; do \
     git clone --depth 1 https://github.com/byrongamatos/slopsmith-plugin-${plugin}.git \
       /app/plugins/${plugin//-/_} 2>/dev/null || echo "skip $plugin"; \
   done
