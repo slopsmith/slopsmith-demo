@@ -135,7 +135,7 @@ tracking individuals.
 
 ### Functional Requirements
 
-- **FR-001**: Image MUST clone `byrongamatos/slopsmith` at build
+- **FR-001**: Image MUST clone `slopsmith/slopsmith` at build
   time, not vendor it.
 - **FR-002**: Image MUST clone the byrongamatos plugin set listed in
   the Dockerfile, plus the community plugin set, into

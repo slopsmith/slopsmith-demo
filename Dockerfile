@@ -27,12 +27,12 @@ ENV GIT_TERMINAL_PROMPT=0
 
 # This ref changes on every push to slopsmith-demo, busting the cache for all
 # subsequent git clone layers — so every build pulls fresh from GitHub.
-ADD https://api.github.com/repos/byrongamatos/slopsmith-demo/git/refs/heads/main /tmp/build_ref
+ADD https://api.github.com/repos/slopsmith/slopsmith-demo/git/refs/heads/main /tmp/build_ref
 
 # Clone slopsmith core
-RUN git clone --depth 1 https://github.com/byrongamatos/slopsmith.git /app
+RUN git clone --depth 1 https://github.com/slopsmith/slopsmith.git /app
 
-# byrongamatos plugins (all — none are committed to the slopsmith core repo).
+# First-party (slopsmith-org) plugins (all — none are committed to the slopsmith core repo).
 # Kept in sync with the desktop bundle list in
 # slopsmith-desktop/scripts/build-common.sh::clone_slopsmith.
 # Excluded: cf (ToS), ug (ToS), rs-2d-highway, rooms.
@@ -41,7 +41,7 @@ RUN for plugin in \
       lyrics-karaoke metronome midi multiplayer nam-tone notedetect \
       piano practice profileimport sectionmap setlist song-preview \
       stepmode studio tabimport tabview tones tutorials; do \
-    git clone --depth 1 https://github.com/byrongamatos/slopsmith-plugin-${plugin}.git \
+    git clone --depth 1 https://github.com/slopsmith/slopsmith-plugin-${plugin}.git \
       /app/plugins/${plugin//-/_} 2>/dev/null || echo "skip $plugin"; \
   done
 
@@ -105,7 +105,7 @@ COPY nam-profiles/ /app/nam-profiles/
 # build time so HF Spaces' git remote doesn't reject binaries).
 RUN mkdir -p /app/demo-assets \
  && curl -sLf \
-      https://github.com/byrongamatos/slopsmith-demo/releases/download/demo-assets-v1/highway-bg.mp4 \
+      https://github.com/slopsmith/slopsmith-demo/releases/download/demo-assets-v1/highway-bg.mp4 \
       -o /app/demo-assets/highway-bg.mp4
 
 # Nginx + supervisord config

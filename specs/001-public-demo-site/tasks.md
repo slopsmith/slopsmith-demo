@@ -17,7 +17,7 @@ the repo; **OPEN** = real gap.
 
 ## Phase 2: Foundational
 
-- [x] **DONE** T010 Clone `byrongamatos/slopsmith` into `/app` —
+- [x] **DONE** T010 Clone `slopsmith/slopsmith` into `/app` —
   `Dockerfile`
 - [x] **DONE** T011 [P] Clone byrongamatos plugins (drums, editor,
   fretboard, lyrics-karaoke, lyrics-sync, metronome, midi,

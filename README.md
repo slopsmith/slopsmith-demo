@@ -10,7 +10,7 @@ pinned: false
 
 # Slopsmith Demo
 
-Public demo of [Slopsmith](https://github.com/byrongamatos/slopsmith) — a web app for browsing, playing, and editing Rocksmith 2014 CDLC.
+Public demo of [Slopsmith](https://github.com/slopsmith/slopsmith) — a web app for browsing, playing, and editing Rocksmith 2014 CDLC.
 
 Hosted on [Hugging Face Spaces](https://huggingface.co/spaces/gamatos/slopsmith-demo) (free CPU tier).
 

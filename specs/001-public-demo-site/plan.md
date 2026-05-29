@@ -34,7 +34,7 @@ build under 5 min from a warm Docker cache.
 
 | Principle | Where it shows up |
 |---|---|
-| I. Track upstream, don't fork | `git clone --depth 1 byrongamatos/slopsmith` + Python heredoc patcher in `Dockerfile`. |
+| I. Track upstream, don't fork | `git clone --depth 1 slopsmith/slopsmith` + Python heredoc patcher in `Dockerfile`. |
 | II. Read-only by convention | `ENV SLOPSMITH_DEMO_MODE=1`, `window.SLOPSMITH_DEMO=true` in `overlay/static/demo.js`. |
 | III. One pre-baked song, no Demucs | `dlc/SS_PonyIcon.sloppak` carries stems + `lyrics.json` + `vocal_pitch.json`. |
 | IV. Plugin suite is the pitch | Two `RUN` blocks in `Dockerfile` clone byrongamatos + community plugins. |
