@@ -4,7 +4,7 @@
 
 ### I. Track Upstream, Don't Fork
 
-The demo MUST clone `byrongamatos/slopsmith` fresh at every build and
+The demo MUST clone `slopsmith/slopsmith` fresh at every build and
 patch `index.html` *in-place* via a Python heredoc in the Dockerfile.
 There is no overlay `index.html`. This is non-negotiable: forking
 would bit-rot the demo within days and is the entire reason this
@@ -56,7 +56,7 @@ third-party trackers. Demo-event tracking goes through
 ### VII. Cache-Busting Is Deliberate
 
 The line
-`ADD https://api.github.com/repos/byrongamatos/slopsmith-demo/git/refs/heads/main /tmp/build_ref`
+`ADD https://api.github.com/repos/slopsmith/slopsmith-demo/git/refs/heads/main /tmp/build_ref`
 in the Dockerfile is load-bearing. It ensures every push to
 `slopsmith-demo` busts the Docker layer cache so subsequent
 `git clone slopsmith.git` layers run fresh. Don't move it; don't
